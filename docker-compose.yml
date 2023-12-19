@@ -34,7 +34,7 @@ services:
 
   celery:
     build: .
-    command: celery -A EventFinderApplication worker -l info
+    command: celery -A main worker -l info
     volumes:
       - .:/code
     depends_on:
@@ -45,7 +45,7 @@ services:
 
 #  celery-beat:
 #    build: .
-#    command: celery -A EventFinderApplication beat -l info
+#    command: celery -A main beat -l info
 #    volumes:
 #      - .:/code
 #    depends_on:
