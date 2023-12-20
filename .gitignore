@@ -1,0 +1,7 @@
+# Project exclude paths
+/venv/
+.env
+*/__pycache__/
+*.pyc
+.idea
+/core_apps/accounts/__pycache__/
