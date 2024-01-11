@@ -54,8 +54,10 @@ INSTALLED_APPS = [
     'django_rest_passwordreset',
     'rest_framework_simplejwt',
     'drf_yasg',
+
     # project_apps
     'core_apps.accounts',
+    'core_apps.events',
 
 ]
 
@@ -122,7 +124,6 @@ DATABASES = {
         'USER': env("DB_USER"),
         'PASSWORD': env("DB_PASSWORD"),
         'HOST': env("DB_HOST"),
-        # 'HOST': 'localhost',
         'PORT': env("DB_PORT"),
     }
 }
