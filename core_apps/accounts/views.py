@@ -65,7 +65,7 @@ class UserView(ModelViewSet):
         if self.action == 'create':
             permission_classes = [AllowAny]
         if self.action == 'retrieve' or self.action == 'list':
-            permission_classes = [IsAuthenticatedOrReadOnly]
+            permission_classes = [IsAuthenticated]
         else:
             permission_classes = [IsOwnerOrAdminPermission]
         return [permission() for permission in permission_classes]
