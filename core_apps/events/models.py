@@ -16,7 +16,7 @@ class Event(models.Model):
     )
 
     category = models.CharField(choices=EVENT_CATEGORY, max_length=25, default='another')
-    organizer = models.ForeignKey(User, on_delete=models.PROTECT)
+    organizer = models.ForeignKey(User, on_delete=models.PROTECT, blank=True, null=False, related_name='event_organize')
     title = models.CharField(max_length=256)
     description = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)

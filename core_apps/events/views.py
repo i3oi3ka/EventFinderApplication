@@ -19,13 +19,13 @@ class IsOwnerOrAdminPermission(BasePermission):
 
 class EventFilter(django_filters.FilterSet):
     title = django_filters.CharFilter(field_name='title', lookup_expr='icontains')
-    # organizer = django_filters.CharFilter(field_name='organizer', lookup_expr='icontains')
+    organizer = django_filters.CharFilter(field_name='organizer', lookup_expr='icontains')
     date = django_filters.DateFilter(field_name='date', lookup_expr='icontains')
     category = django_filters.CharFilter(field_name='category', lookup_expr='icontains')
 
     class Meta:
         model = Event
-        fields = ['title', 'organizer']
+        fields = ['title', 'organizer', 'date', 'organizer']
 
 
 class EventView(ModelViewSet):

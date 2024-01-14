@@ -47,6 +47,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # new
     'corsheaders',
     'celery_progress',
     'rest_framework',
@@ -59,6 +61,8 @@ INSTALLED_APPS = [
     'core_apps.accounts',
     'core_apps.events',
     'core_apps.tickets',
+    'core_apps.reviews',
+    'core_apps.notifications',
 
 ]
 
