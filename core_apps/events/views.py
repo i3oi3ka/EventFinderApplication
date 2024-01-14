@@ -19,7 +19,7 @@ class IsOwnerOrAdminPermission(BasePermission):
 
 class EventFilter(django_filters.FilterSet):
     title = django_filters.CharFilter(field_name='title', lookup_expr='icontains')
-    organizer = django_filters.CharFilter(field_name='organizer', lookup_expr='icontains')
+    # organizer = django_filters.CharFilter(field_name='organizer', lookup_expr='icontains')
     date = django_filters.DateFilter(field_name='date', lookup_expr='icontains')
     category = django_filters.CharFilter(field_name='category', lookup_expr='icontains')
 
@@ -33,14 +33,14 @@ class EventView(ModelViewSet):
     serializer_class = EventSerializer
     filterset_class = EventFilter
 
-    def create(self, request, *args, **kwargs):
-        data = request.data
-
-        data['organizer'] = request.user
-        serializer = EventSerializer(data=data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(serializer.data)
+    # def create(self, request, *args, **kwargs):
+    #     data = request.data
+    #
+    #     data['organizer'] = request.user
+    #     serializer = EventSerializer(data=data)
+    #     serializer.is_valid(raise_exception=True)
+    #     serializer.save()
+    #     return Response(serializer.data)
 
     def get_permissions(self):
         """

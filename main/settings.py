@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     # project_apps
     'core_apps.accounts',
     'core_apps.events',
+    'core_apps.tickets',
 
 ]
 

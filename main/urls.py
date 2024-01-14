@@ -39,6 +39,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/accounts/', include('core_apps.accounts.urls')),
     path('api/events/', include('core_apps.events.urls')),
+    path('api/tickets/', include('core_apps.tickets.urls')),
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
 ]
