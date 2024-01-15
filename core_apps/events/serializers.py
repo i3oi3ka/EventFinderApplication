@@ -6,13 +6,13 @@ from core_apps.tickets.serializers import TicketSerializer
 
 
 class EventSerializer(serializers.ModelSerializer):
-    # organizer = serializers.CharField(source='organizer.username', read_only=True)
+    nickname = serializers.CharField(source='organizer.username', read_only=True)
     free_tickets = serializers.IntegerField(read_only=True)
     sold_tickets = TicketSerializer(many=True, read_only=True)
 
     class Meta:
         model = Event
-        fields = ['id', 'organizer', 'category', 'title', 'description', 'like', 'image', 'num_of_seats', 'date',
+        fields = ['id', 'nickname', 'organizer', 'category', 'title', 'description', 'image', 'num_of_seats', 'date',
                   'venue',
                   'free_tickets',
                   'sold_tickets']

@@ -7,13 +7,15 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from core_apps.accounts.models import User
-from core_apps.accounts.serializers import UserSerializer, UserCreateSerializer, ChangePasswordSerializer
+from core_apps.accounts.serializers import UserSerializer, UserCreateSerializer, ChangePasswordSerializer, \
+    ChangeUserToAdmin
 
 
 class IsOwnerOrAdminPermission(BasePermission):
     """
     Custom permission to only allow owners or admins to access an object.
     """
+
     def has_object_permission(self, request, view, obj):
         # Check if the user is an admin or the owner of the object
         return request.user.is_authenticated and (request.user.is_staff or request.user == obj)
@@ -81,3 +83,9 @@ class ChangePasswordView(generics.UpdateAPIView):
     queryset = User.objects.all()
     permission_classes = [IsOwnerOrAdminPermission]
     serializer_class = ChangePasswordSerializer
+
+
+class ChangeUserToAdminView(generics.UpdateAPIView):
+    queryset = User.objects.all()
+    permission_classes = [IsAdminUser]
+    serializer_class = ChangeUserToAdmin

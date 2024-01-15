@@ -1,4 +1,6 @@
-import django_filters
+from django_filters import DateFilter, CharFilter, DateFromToRangeFilter
+from django_filters.rest_framework import DjangoFilterBackend, FilterSet
+from rest_framework import filters, status
 from rest_framework.permissions import BasePermission, IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
@@ -17,30 +19,33 @@ class IsOwnerOrAdminPermission(BasePermission):
         return request.user.is_authenticated and (request.user.is_staff or request.user == obj.organizer)
 
 
-class EventFilter(django_filters.FilterSet):
-    title = django_filters.CharFilter(field_name='title', lookup_expr='icontains')
-    organizer = django_filters.CharFilter(field_name='organizer', lookup_expr='icontains')
-    date = django_filters.DateFilter(field_name='date', lookup_expr='icontains')
-    category = django_filters.CharFilter(field_name='category', lookup_expr='icontains')
+class EventFilter(FilterSet):
+    title = CharFilter(lookup_expr='icontains')
+    description = CharFilter(lookup_expr='icontains')
+    date = DateFromToRangeFilter(field_name='date')
+    category = CharFilter(field_name='category', lookup_expr='icontains')
+    venue = CharFilter(field_name='venue', lookup_expr='icontains')
 
     class Meta:
         model = Event
-        fields = ['title', 'organizer', 'date', 'organizer']
+        fields = ['title', 'description', 'date', 'category', 'venue']
 
 
 class EventView(ModelViewSet):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
     filterset_class = EventFilter
+    filter_backends = [filters.SearchFilter, DjangoFilterBackend]
+    search_fields = ['title', 'description']
 
-    # def create(self, request, *args, **kwargs):
-    #     data = request.data
-    #
-    #     data['organizer'] = request.user
-    #     serializer = EventSerializer(data=data)
-    #     serializer.is_valid(raise_exception=True)
-    #     serializer.save()
-    #     return Response(serializer.data)
+    def create(self, request, *args, **kwargs):
+        data = request.data
+        data['organizer'] = request.user.id
+        print(data)
+        serializer = EventSerializer(data=data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     def get_permissions(self):
         """
