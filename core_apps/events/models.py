@@ -25,7 +25,7 @@ class Event(models.Model):
     num_of_seats = models.PositiveIntegerField(default=0)
     date = models.DateTimeField(null=False)
     venue = models.CharField(null=False, max_length=256, blank=True)
-    free_tickets = models.BooleanField(default=True)
+    free_tickets = models.PositiveIntegerField()
 
     def __str__(self):
         return f'Event: {self.title}, date: {self.date}, organizer: {self.organizer}'
