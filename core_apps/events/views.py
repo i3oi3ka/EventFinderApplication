@@ -38,15 +38,6 @@ class EventView(ModelViewSet):
     filter_backends = [filters.SearchFilter, DjangoFilterBackend]
     search_fields = ['title', 'description']
 
-    def create(self, request, *args, **kwargs):
-        data = request.data
-        data['organizer'] = request.user.id
-        print(data)
-        serializer = EventSerializer(data=data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-
     def get_permissions(self):
         """
         Instantiates and returns the list of permissions that this view requires.

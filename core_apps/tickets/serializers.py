@@ -1,4 +1,5 @@
-from rest_framework import serializers
+from rest_framework import serializers, status
+from rest_framework.response import Response
 
 from core_apps.tickets.models import Ticket
 
@@ -8,4 +9,8 @@ class TicketSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Ticket
-        fields = "__all__"
+        fields = ['id', 'nickname', 'event']
+
+    def create(self, validated_data):
+        validated_data['user'] = self.context['request'].user
+        return super(TicketSerializer, self).create(validated_data)
