@@ -50,7 +50,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['id', 'nickname', 'username', 'email', 'settings']
+        fields = ['id', 'nickname', 'first_name', 'last_name', 'email', 'username', 'email', 'settings']
 
     def update(self, instance, validated_data):
         settings_data = validated_data.pop('settings', None)

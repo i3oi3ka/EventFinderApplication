@@ -5,11 +5,11 @@ from core_apps.tickets.models import Ticket
 
 
 class TicketSerializer(serializers.ModelSerializer):
-    nickname = serializers.CharField(source='user.nickname', read_only=True)
+    user = serializers.PrimaryKeyRelatedField(read_only=True)
 
     class Meta:
         model = Ticket
-        fields = ['id', 'nickname', 'event']
+        fields = ['id', 'event', 'user']
 
     def create(self, validated_data):
         validated_data['user'] = self.context['request'].user

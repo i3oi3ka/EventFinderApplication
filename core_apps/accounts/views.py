@@ -1,6 +1,7 @@
 import django.contrib.auth
 import django_filters
-from rest_framework import status, generics
+from rest_framework import status
+from rest_framework.generics import UpdateAPIView
 from rest_framework.permissions import IsAuthenticated, AllowAny, IsAdminUser, BasePermission, IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
@@ -79,13 +80,13 @@ class UserView(ModelViewSet):
             return UserSerializer
 
 
-class ChangePasswordView(generics.UpdateAPIView):
+class ChangePasswordView(UpdateAPIView):
     queryset = User.objects.all()
     permission_classes = [IsOwnerOrAdminPermission]
     serializer_class = ChangePasswordSerializer
 
 
-class ChangeUserToAdminView(generics.UpdateAPIView):
+class ChangeUserToAdminView(UpdateAPIView):
     queryset = User.objects.all()
     permission_classes = [IsAdminUser]
     serializer_class = ChangeUserToAdmin

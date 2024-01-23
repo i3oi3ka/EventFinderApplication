@@ -1,10 +1,12 @@
+from django.urls import path
 from rest_framework.routers import DefaultRouter
 
 from .views import TicketView, MyTicketView
 
 router = DefaultRouter()
-router.register('my', MyTicketView, basename='my_tickets')
 router.register('', TicketView, basename='tickets')
 
-
-urlpatterns = router.urls
+urlpatterns = [
+               path('my/', MyTicketView.as_view(), name='my_ticket'),
+               ]
+urlpatterns += router.urls
