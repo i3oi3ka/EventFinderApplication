@@ -24,9 +24,9 @@ from django.conf.urls.static import static
 
 schema_view = get_schema_view(
     openapi.Info(
-        title="TeamChallenge",
+        title="EventFinder",
         default_version='v1',
-        description="API for TeamChallenge",
+        description="API for EventFinder",
         # terms_of_service="https://www.yourapp.com/terms/",
         # contact=openapi.Contact(email="contact@yourapp.com"),
         # license=openapi.License(name="Your License"),

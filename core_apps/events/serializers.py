@@ -8,7 +8,6 @@ from core_apps.tickets.serializers import TicketSerializer
 class EventSerializer(serializers.ModelSerializer):
     nickname = serializers.CharField(source='organizer.username', read_only=True)
     free_tickets = serializers.IntegerField(read_only=True)
-    sold_tickets = TicketSerializer(many=True, read_only=True)
 
     class Meta:
         model = Event

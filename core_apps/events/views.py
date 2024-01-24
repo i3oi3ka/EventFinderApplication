@@ -42,7 +42,7 @@ class EventView(ModelViewSet):
         """
         Instantiates and returns the list of permissions that this view requires.
         """
-        if self.action == 'update' or self.action == 'delete':
+        if self.action in ['update', 'delete', 'partial_update']:
             permission_classes = [IsOwnerOrAdminPermission]
         else:
             # permission_classes = [IsAuthenticated]

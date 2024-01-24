@@ -8,4 +8,3 @@ from core_apps.notifications.serializers import NotificationSerializer
 class NotificationView(ModelViewSet):
     queryset = Notification.objects.all()
     serializer_class = NotificationSerializer
-
