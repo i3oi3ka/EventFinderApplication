@@ -6,15 +6,14 @@ from core_apps.tickets.serializers import TicketSerializer
 
 
 class EventSerializer(serializers.ModelSerializer):
-    nickname = serializers.CharField(source='organizer.username', read_only=True)
+    organizer = serializers.PrimaryKeyRelatedField(read_only=True)
     free_tickets = serializers.IntegerField(read_only=True)
+    rating = serializers.IntegerField()
 
     class Meta:
         model = Event
-        fields = ['id', 'nickname', 'category', 'title', 'description', 'image', 'num_of_seats', 'date',
-                  'venue',
-                  'free_tickets',
-                  'sold_tickets']
+        fields = ['id', 'organizer', 'rating', 'category', 'title', 'description', 'image', 'num_of_seats', 'date',
+                  'venue', 'free_tickets', 'sold_tickets']
 
     def create(self, validated_data):
         validated_data['organizer'] = self.context['request'].user

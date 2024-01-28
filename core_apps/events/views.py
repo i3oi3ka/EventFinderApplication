@@ -45,6 +45,5 @@ class EventView(ModelViewSet):
         if self.action in ['update', 'delete', 'partial_update']:
             permission_classes = [IsOwnerOrAdminPermission]
         else:
-            # permission_classes = [IsAuthenticated]
-            permission_classes = [AllowAny]
+            permission_classes = [IsAuthenticated]
         return [permission() for permission in permission_classes]

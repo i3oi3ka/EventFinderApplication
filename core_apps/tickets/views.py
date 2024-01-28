@@ -16,6 +16,7 @@ class IsOwnerOrAdminPermission(BasePermission):
     """
     Custom permission to only allow owners or admins to access an object.
     """
+
     def has_object_permission(self, request, view, obj):
         # Check if the user is an admin or the owner of the object
         return request.user.is_authenticated and (request.user.is_staff or request.user == obj.user)
@@ -35,6 +36,16 @@ class TicketView(ModelViewSet):
         event.free_tickets -= 1
         event.save()
         return super().create(request, *args, **kwargs)
+
+    def destroy(self, request, *args, **kwargs):
+        data = request.data
+        ticket = get_object_or_404(Ticket, pk=kwargs['pk'])
+        event = ticket.event
+        if event.date.replace(tzinfo=timezone.utc) < datetime.now(timezone.utc):
+            return Response({'msg': 'sorry, this event has passed'}, status=status.HTTP_400_BAD_REQUEST)
+        event.free_tickets += 1
+        event.save()
+        return super().destroy(request, *args, **kwargs)
 
     def get_permissions(self):
         """
