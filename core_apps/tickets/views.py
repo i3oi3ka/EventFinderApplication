@@ -1,5 +1,6 @@
 from datetime import datetime, timezone
 
+from django_filters.rest_framework import FilterSet, ModelChoiceFilter
 from rest_framework import status
 from rest_framework.generics import RetrieveAPIView, ListAPIView
 from rest_framework.permissions import IsAdminUser, IsAuthenticated, BasePermission
@@ -7,6 +8,7 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 from django.shortcuts import get_object_or_404
 
+from core_apps.accounts.models import User
 from core_apps.events.models import Event
 from core_apps.tickets.models import Ticket
 from core_apps.tickets.serializers import TicketSerializer
@@ -22,9 +24,19 @@ class IsOwnerOrAdminPermission(BasePermission):
         return request.user.is_authenticated and (request.user.is_staff or request.user == obj.user)
 
 
+class TicketFilter(FilterSet):
+    user = ModelChoiceFilter(queryset=User.objects.all())
+    event = ModelChoiceFilter(queryset=Event.objects.all())
+
+    class Meta:
+        model = Ticket
+        fields = ['user', 'event']
+
+
 class TicketView(ModelViewSet):
     serializer_class = TicketSerializer
     queryset = Ticket.objects.all()
+    filterset_class = TicketFilter
 
     def create(self, request, *args, **kwargs):
         data = request.data

@@ -1,6 +1,7 @@
-from django_filters import DateFilter, CharFilter, DateFromToRangeFilter
+from django_filters import DateFilter, CharFilter, DateFromToRangeFilter, ChoiceFilter
 from django_filters.rest_framework import DjangoFilterBackend, FilterSet
 from rest_framework import filters, status
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from rest_framework.permissions import BasePermission, IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
@@ -23,7 +24,8 @@ class EventFilter(FilterSet):
     title = CharFilter(lookup_expr='icontains')
     description = CharFilter(lookup_expr='icontains')
     date = DateFromToRangeFilter(field_name='date')
-    category = CharFilter(field_name='category', lookup_expr='icontains')
+    # category = CharFilter(field_name='category', lookup_expr='icontains')
+    category = ChoiceFilter(choices=Event.EVENT_CATEGORY)
     venue = CharFilter(field_name='venue', lookup_expr='icontains')
 
     class Meta:
@@ -32,6 +34,7 @@ class EventFilter(FilterSet):
 
 
 class EventView(ModelViewSet):
+    authentication_classes = [SessionAuthentication, BasicAuthentication]
     queryset = Event.objects.all()
     serializer_class = EventSerializer
     filterset_class = EventFilter

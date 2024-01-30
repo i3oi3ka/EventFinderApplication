@@ -37,6 +37,7 @@ schema_view = get_schema_view(
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('api/accounts/', include('core_apps.accounts.urls')),
     path('api/events/', include('core_apps.events.urls')),
     path('api/tickets/', include('core_apps.tickets.urls')),
