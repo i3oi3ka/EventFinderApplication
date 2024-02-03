@@ -2,6 +2,7 @@ from django.db import models
 
 from core_apps.accounts.models import User
 from core_apps.events.models import Event
+from core_apps.accounts.tasks import send_mail_to_user
 
 
 class Notification(models.Model):
@@ -12,3 +13,7 @@ class Notification(models.Model):
     text = models.TextField(blank=True, null=False)
     unread = models.BooleanField(default=True)
 
+    def save(self, *args, **kwargs):
+        if not self.pk:
+            send_mail_to_user.delay(self.title, self.text, [self.receiver.email])
+        super().save(*args, **kwargs)

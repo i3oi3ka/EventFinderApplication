@@ -10,6 +10,7 @@ from django.shortcuts import get_object_or_404
 
 from core_apps.accounts.models import User
 from core_apps.events.models import Event
+from core_apps.notifications.models import Notification
 from core_apps.tickets.models import Ticket
 from core_apps.tickets.serializers import TicketSerializer
 
@@ -47,6 +48,12 @@ class TicketView(ModelViewSet):
             return Response({'msg': 'sorry, no free tickets'}, status=status.HTTP_400_BAD_REQUEST)
         event.free_tickets -= 1
         event.save()
+        notification = Notification(event=event,
+                                    receiver=request.user,
+                                    title=f'You success subscribe on event {event.title}',
+                                    text=f'You success subscribe on event {event.title}'
+                                    )
+        notification.save()
         return super().create(request, *args, **kwargs)
 
     def destroy(self, request, *args, **kwargs):
