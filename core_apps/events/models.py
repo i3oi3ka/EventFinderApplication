@@ -3,6 +3,7 @@ from django.db import models
 from core_apps.accounts.models import User
 
 
+
 class Event(models.Model):
     EVENT_CATEGORY = (
         ('sports', 'Sports'),
@@ -28,3 +29,12 @@ class Event(models.Model):
 
     def __str__(self):
         return f'Event: {self.title}, date: {self.date}, organizer: {self.organizer}'
+
+    def save(self, *args, **kwargs):
+        if self.pk:
+            from core_apps.notifications.tasks import create_notification
+            tickets = self.sold_tickets.all()
+            for ticket in tickets:
+                create_notification.delay(ticket.id)
+        super().save(*args, **kwargs)
+

@@ -64,6 +64,12 @@ class TicketView(ModelViewSet):
             return Response({'msg': 'sorry, this event has passed'}, status=status.HTTP_400_BAD_REQUEST)
         event.free_tickets += 1
         event.save()
+        notification = Notification(event=event,
+                                    receiver=request.user,
+                                    title=f'You success unsubscribe on event {event.title}',
+                                    text=f'You success unsubscribe on event {event.title}'
+                                    )
+        notification.save()
         return super().destroy(request, *args, **kwargs)
 
     def get_permissions(self):
