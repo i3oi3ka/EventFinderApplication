@@ -38,12 +38,12 @@ class NotificationView(ModelViewSet):
             notification.save()
         return notification
 
-    # def get_permissions(self):
-    #     """
-    #     Instantiates and returns the list of permissions that this view requires.
-    #     """
-    #     if self.action == 'get':
-    #         permission_classes = [IsOwnerOrAdminPermission]
-    #     else:
-    #         permission_classes = [IsAdminUser]
-    #     return [permission() for permission in permission_classes]
+    def get_permissions(self):
+        """
+        Instantiates and returns the list of permissions that this view requires.
+        """
+        if self.action == 'get':
+            permission_classes = [IsOwnerOrAdminPermission]
+        else:
+            permission_classes = [IsAdminUser]
+        return [permission() for permission in permission_classes]

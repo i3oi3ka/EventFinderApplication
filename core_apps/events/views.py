@@ -33,7 +33,7 @@ class EventFilter(FilterSet):
 
 
 class EventView(ModelViewSet):
-    authentication_classes = [SessionAuthentication, BasicAuthentication]
+    # authentication_classes = [SessionAuthentication, BasicAuthentication]
     queryset = Event.objects.all()
     serializer_class = EventSerializer
     filterset_class = EventFilter
@@ -44,7 +44,9 @@ class EventView(ModelViewSet):
         """
         Instantiates and returns the list of permissions that this view requires.
         """
-        if self.action in ['update', 'delete', 'partial_update']:
+        if self.action == 'list':
+            permission_classes = [AllowAny]
+        elif self.action in ['update', 'delete', 'partial_update']:
             permission_classes = [IsOwnerOrAdminPermission]
         else:
             permission_classes = [IsAuthenticated]
