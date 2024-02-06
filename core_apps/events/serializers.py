@@ -13,7 +13,7 @@ class EventSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event
         fields = ['id', 'organizer', 'rating', 'category', 'title', 'description', 'image', 'num_of_seats', 'date',
-                  'venue', 'free_tickets', 'sold_tickets']
+                  'venue', 'free_tickets']
 
     def create(self, validated_data):
         validated_data['organizer'] = self.context['request'].user

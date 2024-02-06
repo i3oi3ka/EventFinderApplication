@@ -1,8 +1,9 @@
 import django.contrib.auth
 import django_filters
 from rest_framework import status
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from rest_framework.generics import UpdateAPIView
-from rest_framework.permissions import IsAuthenticated, AllowAny, IsAdminUser, BasePermission, IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticated, AllowAny, IsAdminUser, BasePermission
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -36,6 +37,7 @@ class UserView(ModelViewSet):
     """
         list, get, create, update and delete user and settings for him.
     """
+    authentication_classes = [SessionAuthentication, BasicAuthentication]
     queryset = User.objects.all().prefetch_related('settings')
     serializer_class = UserSerializer
     filterset_class = UserFilter

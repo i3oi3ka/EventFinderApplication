@@ -24,7 +24,6 @@ class EventFilter(FilterSet):
     title = CharFilter(lookup_expr='icontains')
     description = CharFilter(lookup_expr='icontains')
     date = DateFromToRangeFilter(field_name='date')
-    # category = CharFilter(field_name='category', lookup_expr='icontains')
     category = ChoiceFilter(choices=Event.EVENT_CATEGORY)
     venue = CharFilter(field_name='venue', lookup_expr='icontains')
 

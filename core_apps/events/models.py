@@ -3,7 +3,6 @@ from django.db import models
 from core_apps.accounts.models import User
 
 
-
 class Event(models.Model):
     EVENT_CATEGORY = (
         ('sports', 'Sports'),
@@ -27,6 +26,11 @@ class Event(models.Model):
     free_tickets = models.PositiveIntegerField()
     rating = models.PositiveIntegerField(default=0)
 
+    class Meta:
+        indexes = [
+            models.Index(fields=['category', 'title', 'venue'])
+        ]
+
     def __str__(self):
         return f'Event: {self.title}, date: {self.date}, organizer: {self.organizer}'
 
@@ -37,4 +41,3 @@ class Event(models.Model):
             for ticket in tickets:
                 create_notification.delay(ticket.id)
         super().save(*args, **kwargs)
-
