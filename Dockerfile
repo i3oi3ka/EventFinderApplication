@@ -5,3 +5,6 @@ WORKDIR /code
 COPY requirements.txt /code/
 RUN pip install --no-cache-dir -r requirements.txt
 COPY . /code/
+RUN adduser --disabled-password service-user
+
+USER service-user

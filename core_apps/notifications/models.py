@@ -14,6 +14,6 @@ class Notification(models.Model):
     unread = models.BooleanField(default=True)
 
     def save(self, *args, **kwargs):
-        if not self.pk:
+        if not self.pk and self.receiver.email:
             send_mail_to_user.delay(self.title, self.text, [self.receiver.email])
         super().save(*args, **kwargs)

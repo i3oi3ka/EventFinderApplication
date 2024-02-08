@@ -39,5 +39,5 @@ class Event(models.Model):
             from core_apps.notifications.tasks import create_notification
             tickets = self.sold_tickets.all()
             for ticket in tickets:
-                create_notification.delay(ticket.id)
+                create_notification.delay(ticket.id, f'change in {self.title}', f'Event was changed, please check it.')
         super().save(*args, **kwargs)

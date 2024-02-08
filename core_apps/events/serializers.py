@@ -8,7 +8,7 @@ from core_apps.tickets.serializers import TicketSerializer
 class EventSerializer(serializers.ModelSerializer):
     organizer = serializers.PrimaryKeyRelatedField(read_only=True)
     free_tickets = serializers.IntegerField(read_only=True)
-    rating = serializers.IntegerField()
+    rating = serializers.IntegerField(read_only=True)
 
     class Meta:
         model = Event

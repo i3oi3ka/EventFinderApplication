@@ -57,7 +57,6 @@ class TicketView(ModelViewSet):
         return super().create(request, *args, **kwargs)
 
     def destroy(self, request, *args, **kwargs):
-        data = request.data
         ticket = get_object_or_404(Ticket, pk=kwargs['pk'])
         event = ticket.event
         if event.date.replace(tzinfo=timezone.utc) < datetime.now(timezone.utc):

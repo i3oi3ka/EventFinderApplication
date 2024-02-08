@@ -34,7 +34,7 @@ class EventFilter(FilterSet):
 
 class EventView(ModelViewSet):
     # authentication_classes = [SessionAuthentication, BasicAuthentication]
-    queryset = Event.objects.all()
+    queryset = Event.objects.all().order_by('date')
     serializer_class = EventSerializer
     filterset_class = EventFilter
     filter_backends = [filters.SearchFilter, DjangoFilterBackend]
