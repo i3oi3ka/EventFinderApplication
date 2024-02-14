@@ -13,14 +13,12 @@ from core_apps.events.models import Event
 from core_apps.reviews.models import Review
 from core_apps.reviews.serializers import ReviewSerializer
 from core_apps.tickets.models import Ticket
-from core_apps.events.tasks import set_rating
 
 
 class IsOwnerOrAdminPermission(BasePermission):
     """
     Custom permission to only allow owners or admins to access an object.
     """
-
     def has_object_permission(self, request, view, obj):
         # Check if the user is an admin or the owner of the object
         return request.user.is_authenticated and (request.user.is_staff or request.user == obj.user)
@@ -60,6 +58,5 @@ class ReviewView(ModelViewSet):
         if self.action in ['update', 'partial_update', 'delete']:
             permission_classes = [IsOwnerOrAdminPermission]
         else:
-            permission_classes = [AllowAny]
-            # permission_classes = [IsAuthenticated]
+            permission_classes = [IsAuthenticated]
         return [permission() for permission in permission_classes]

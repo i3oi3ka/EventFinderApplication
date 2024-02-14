@@ -23,7 +23,6 @@ class IsOwnerOrAdminPermission(BasePermission):
         return request.user.is_authenticated and (request.user.is_staff or request.user == obj)
 
 
-# Create your views here.
 class UserFilter(django_filters.FilterSet):
     nickname = django_filters.CharFilter(field_name='nickname', lookup_expr='icontains')
     username = django_filters.CharFilter(field_name='username', lookup_expr='icontains')
@@ -37,7 +36,7 @@ class UserView(ModelViewSet):
     """
         list, get, create, update and delete user and settings for him.
     """
-    authentication_classes = [SessionAuthentication, BasicAuthentication]
+    # authentication_classes = [SessionAuthentication, BasicAuthentication]
     queryset = User.objects.all().prefetch_related('settings')
     serializer_class = UserSerializer
     filterset_class = UserFilter
@@ -69,7 +68,7 @@ class UserView(ModelViewSet):
         """
         if self.action == 'create':
             permission_classes = [AllowAny]
-        if self.action == 'retrieve' or self.action == 'list':
+        elif self.action == 'retrieve' or self.action == 'list':
             permission_classes = [IsAuthenticated]
         else:
             permission_classes = [IsOwnerOrAdminPermission]

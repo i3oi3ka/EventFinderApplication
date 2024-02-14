@@ -77,8 +77,10 @@ class TicketView(ModelViewSet):
         """
         if self.action == 'create':
             permission_classes = [IsAuthenticated]
-        else:
+        elif self.action in ['destroy', 'retrieve']:
             permission_classes = [IsOwnerOrAdminPermission]
+        else:
+            permission_classes = [IsAdminUser]
         return [permission() for permission in permission_classes]
 
 
