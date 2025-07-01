@@ -21,7 +21,7 @@ git clone https://github.com/i3oi3ka/EventFinderApplication.git
 
 2.Create a '.env' file in the project root and set the necessary environment variables:
 
-```
+```env
 SECRET_KEY=
 DB_PASSWORD=
 DB_NAME=
@@ -42,11 +42,15 @@ docker-compose up --build
 ```
 
 4.Create a superuser:
+
 ```shell
 docker-compose exec backend python manage.py createsuperuser
 ```
-5.Access the API documentation at http://localhost:8000/swagger or http://localhost:8000/redoc for FastAPI.
+
+5.Access the API documentation at <http://localhost:8000/swagger> or <http://localhost:8000/redoc> for FastAPI.
+
 ## Project Structure
+
 The project is organized into applications for better separation of concerns:
 
 users: Manages user authentication and profiles.\
@@ -56,10 +60,10 @@ reviews: Deals with event reviews and ratings.\
 notifications: Handles notifications for users.
 
 ## Database Structure
-The database includes the following tables:
 
-    Users
-    Events
-    Tickets
-    Reviews
-    Notifications
+The database includes the following tables:
+Users
+Events
+Tickets
+Reviews
+Notifications
