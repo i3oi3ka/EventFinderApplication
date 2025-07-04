@@ -30,7 +30,7 @@ SECRET_KEY = env("SECRET_KEY")
 DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1',
-                 '0.0.0.0']
+                 '0.0.0.0', 'localhost']
 
 CORS_ORIGIN_ALLOW_ALL = True
 
