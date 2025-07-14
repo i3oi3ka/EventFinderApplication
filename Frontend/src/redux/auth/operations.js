@@ -1,0 +1,68 @@
+import { createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
+
+axios.defaults.baseURL = "https://127.0.0.1:8000";
+
+const setAuthToken = (token) => {
+  if (token) {
+    axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+  } else {
+    delete axios.defaults.headers.common.Authorization;
+  }
+};
+
+export const registerUser = createAsyncThunk(
+  "auth/registerUser",
+  async (userData, { rejectWithValue }) => {
+    try {
+      const response = await axios.post("/auth/register", userData);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const loginUser = createAsyncThunk(
+  "auth/loginUser",
+  async (credentials, { rejectWithValue }) => {
+    try {
+      const response = await axios.post("/auth/login", credentials);
+      setAuthToken(response.data.token);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const logoutUser = createAsyncThunk(
+  "auth/logoutUser",
+  async (_, { rejectWithValue }) => {
+    try {
+      await axios.post("/auth/logout");
+      setAuthToken(null);
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const refreshUser = createAsyncThunk(
+  "auth/refreshUser",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await axios.post("/auth/refresh");
+      setAuthToken(response.data.token);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  },
+  {
+    condition: (_, { getState }) => {
+      const { auth } = getState();
+      return auth.token !== null && !auth.isRefreshing;
+    },
+  }
+);
