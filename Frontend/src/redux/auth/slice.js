@@ -4,7 +4,7 @@ import { loginUser, logoutUser, refreshUser, registerUser } from "./operations";
 const authSlice = createSlice({
   name: "auth",
   initialState: {
-    user: { name: "", email: "" },
+    user: { nickname: "", username: "", email: "" },
     token: null,
     isLoading: false,
     isRefreshing: false,
@@ -45,7 +45,7 @@ const authSlice = createSlice({
   })
   .addCase(logoutUser.fulfilled, (state) => {
     state.isLoading = false;
-    state.user = { name: "", email: "" };
+    state.user = { nickname: "", username: "", email: "" };
     state.token = null;
     state.isAuthenticated = false;
   })
