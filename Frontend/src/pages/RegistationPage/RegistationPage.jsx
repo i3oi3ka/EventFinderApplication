@@ -1,11 +1,12 @@
 import { Formik } from "formik";
-import { createUser } from "../../api/api.js";
+import { useDispatch } from "react-redux";
+import { registerUser } from "../../redux/auth/operations.js";
 
 const RegistationPage = () => {
-  // const [user, setUser] = useState();
-  const submitForm = async (values) => {
-    const user = await createUser(values);
-    console.log(user);
+  const dispatch = useDispatch();
+  const submitForm = (values, actions) => {
+    dispatch(registerUser(values));
+    actions.reset;
   };
 
   return (
