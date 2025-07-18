@@ -131,7 +131,6 @@ class CustomTokenRefreshSerializer(TokenRefreshSerializer):
 
         try:
             user = User.objects.get(id=token["user_id"])
-            print(f"User found: {token}")
         except User.DoesNotExist:
             raise serializers.ValidationError("User not found")
 
