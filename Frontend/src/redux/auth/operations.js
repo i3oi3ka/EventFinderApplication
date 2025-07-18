@@ -16,9 +16,10 @@ export const registerUser = createAsyncThunk(
   async (userData, { rejectWithValue }) => {
     try {
       const response = await axios.post("/accounts/", userData);
+      setAuthToken(response.data.token.access);
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      return rejectWithValue(error.message);
     }
   }
 );
@@ -28,10 +29,10 @@ export const loginUser = createAsyncThunk(
   async (credentials, { rejectWithValue }) => {
     try {
       const response = await axios.post("/accounts/token/", credentials);
-      setAuthToken(response.data.token);
+      setAuthToken(response.data.token.access);
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      return rejectWithValue(error.message);
     }
   }
 );
@@ -43,7 +44,7 @@ export const logoutUser = createAsyncThunk(
       await axios.post("/auth/logout");
       setAuthToken(null);
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      return rejectWithValue(error.message);
     }
   }
 );
@@ -53,10 +54,10 @@ export const refreshUser = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await axios.post("/auth/refresh");
-      setAuthToken(response.data.token);
+      setAuthToken(response.data.token.access);
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      return rejectWithValue(error.message);
     }
   },
   {
