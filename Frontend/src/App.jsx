@@ -9,6 +9,7 @@ import { refreshUser } from "./redux/auth/operations";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import HomeLayout from "./layout/HomeLayout/HomeLayout";
+import RestrictedRoute from "./guards/RestrictedRoute/RestrictedRoute";
 
 function App() {
   const isRefreshing = useSelector(selectIsRefreshing);
@@ -25,8 +26,14 @@ function App() {
       <Routes>
         <Route path="/" element={<HomeLayout />}>
           <Route path="/" element={<HomePage />} />
-          <Route path="/register" element={<RegistationPage />} />
-          <Route path="/login" element={<LoginPage />} />
+          <Route
+            path="/register"
+            element={<RestrictedRoute component={<RegistationPage />} />}
+          />
+          <Route
+            path="/login"
+            element={<RestrictedRoute component={<LoginPage />} />}
+          />
           <Route path="*" element={<HomePage />} />
         </Route>
       </Routes>
