@@ -41,7 +41,7 @@ export const logoutUser = createAsyncThunk(
   "auth/logoutUser",
   async (_, { rejectWithValue }) => {
     try {
-      await axios.post("/auth/logout");
+      await axios.post("/accounts/logout");
       setAuthToken(null);
     } catch (error) {
       return rejectWithValue(error.message);
@@ -58,7 +58,7 @@ export const refreshUser = createAsyncThunk(
       const response = await axios.post("/accounts/token/refresh/", {
         refresh: refreshToken,
       });
-      setAuthToken(response.data.token.access);
+      setAuthToken(response.access);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.message);
@@ -67,7 +67,7 @@ export const refreshUser = createAsyncThunk(
   {
     condition: (_, { getState }) => {
       const { auth } = getState();
-      return auth.token !== null && !auth.isRefreshing;
+      return auth.token.refresh !== null && !auth.isRefreshing;
     },
   }
 );

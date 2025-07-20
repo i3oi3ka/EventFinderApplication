@@ -1,6 +1,6 @@
 export const selectIsLoggedIn = (state) => state.auth.isAuthenticated;
 
-export const selectUserName = (state) => state.auth.user.name;
+export const selectUserName = (state) => state.auth.user.nickname;
 
 export const selectIsLoading = (state) => state.auth.isLoading;
 

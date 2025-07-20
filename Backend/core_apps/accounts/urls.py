@@ -7,8 +7,10 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
     TokenVerifyView,
 )
+from django.contrib.auth.views import LogoutView
 
 from .views import CustomTokenRefreshView
+
 
 router = DefaultRouter()
 router.register("", UserView, basename="accounts")
@@ -31,5 +33,6 @@ urlpatterns = [
     path("token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
     path("token/refresh/", CustomTokenRefreshView.as_view(), name="token_refresh"),
     path("token/verify/", TokenVerifyView.as_view(), name="token_verify"),
+    path("logout/", LogoutView.as_view(), name="token_logout"),
 ]
 urlpatterns += router.urls
