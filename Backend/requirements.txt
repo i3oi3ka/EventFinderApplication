@@ -1,6 +1,6 @@
 asgiref==3.7.2
 django==4.2.5
-Pillow==9.4.0
+Pillow>=11.0.0
 django-filter==23.3
 djangorestframework==3.14.0
 djangorestframework-simplejwt==5.3.1

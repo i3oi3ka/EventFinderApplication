@@ -12,8 +12,8 @@ from rest_framework.permissions import (
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 from rest_framework_simplejwt.tokens import RefreshToken
-from rest_framework_simplejwt.views import TokenRefreshView
-from .serializers import CustomTokenRefreshSerializer
+from rest_framework_simplejwt.views import TokenRefreshView, TokenObtainPairView
+from .serializers import CustomTokenRefreshSerializer, CustomTokenObtainPairSerializer
 
 from core_apps.accounts.models import User
 from core_apps.accounts.serializers import (
@@ -109,3 +109,7 @@ class ChangeUserToAdminView(UpdateAPIView):
 
 class CustomTokenRefreshView(TokenRefreshView):
     serializer_class = CustomTokenRefreshSerializer
+
+
+class CustomTokenObtainPairView(TokenObtainPairView):
+    serializer_class = CustomTokenObtainPairSerializer

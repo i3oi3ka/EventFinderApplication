@@ -3,7 +3,10 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
 from rest_framework_simplejwt.tokens import RefreshToken
-from rest_framework_simplejwt.serializers import TokenRefreshSerializer
+from rest_framework_simplejwt.serializers import (
+    TokenRefreshSerializer,
+    TokenObtainPairSerializer,
+)
 
 from core_apps.accounts.models import Settings, User
 
@@ -135,15 +138,38 @@ class CustomTokenRefreshSerializer(TokenRefreshSerializer):
             raise serializers.ValidationError("User not found")
 
         # Додаємо додаткову інформацію
-        data.update(
-            {
-                "user": {
-                    "id": user.id,
-                    "email": user.email,
-                    "username": user.username,
-                    # інші потрібні поля
-                }
-            }
-        )
+        data = {
+            "token": data,
+            "user": {
+                "id": user.id,
+                "email": user.email,
+                "username": user.username,
+                "nickname": user.nickname,
+                "settings": SettingsSerializer(user.settings).data,
+                # інші потрібні поля
+            },
+        }
+
+        return data
+
+
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    def validate(self, attrs):
+        data = super().validate(attrs)
+
+        # Додаткові дані про користувача
+        user = self.user
+
+        data = {
+            "token": data,
+            "user": {
+                "id": user.id,
+                "email": user.email,
+                "username": user.username,
+                "nickname": user.nickname,
+                "settings": SettingsSerializer(user.settings).data,
+                # інші потрібні поля
+            },
+        }
 
         return data
