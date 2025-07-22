@@ -7,8 +7,7 @@ from rest_framework_simplejwt.serializers import (
     TokenRefreshSerializer,
     TokenObtainPairSerializer,
 )
-
-from core_apps.accounts.models import Settings, User
+from core_apps.accounts.models import User, Settings
 
 
 class SettingsSerializer(serializers.ModelSerializer):
