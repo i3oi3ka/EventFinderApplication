@@ -10,6 +10,7 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import HomeLayout from "./layout/HomeLayout/HomeLayout";
 import RestrictedRoute from "./guards/RestrictedRoute/RestrictedRoute";
+import EventPage from "./pages/EventPage/EventPage";
 
 function App() {
   const isRefreshing = useSelector(selectIsRefreshing);
@@ -26,6 +27,7 @@ function App() {
       <Routes>
         <Route path="/" element={<HomeLayout />}>
           <Route path="/" element={<HomePage />} />
+          <Route path="/events" element={<EventPage />} />
           <Route
             path="/register"
             element={<RestrictedRoute component={<RegistationPage />} />}
