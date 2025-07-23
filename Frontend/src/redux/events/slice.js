@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchEventsAsync } from "./operations";
+import { createEventAsync, fetchEventsAsync } from "./operations";
 
 const eventsSlice = createSlice({
   name: "events",
@@ -19,6 +19,18 @@ const eventsSlice = createSlice({
         state.events = action.payload;
       })
       .addCase(fetchEventsAsync.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(createEventAsync.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(createEventAsync.fulfilled, (state, action) => {
+        state.loading = false;
+        state.events.push(action.payload);
+      })
+      .addCase(createEventAsync.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });

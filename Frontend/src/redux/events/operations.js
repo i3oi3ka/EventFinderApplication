@@ -14,3 +14,15 @@ export const fetchEventsAsync = createAsyncThunk(
     }
   }
 );
+
+export const createEventAsync = createAsyncThunk(
+  "events/createEvent",
+  async (eventData, { rejectWithValue }) => {
+    try {
+      const response = await axios.post("/events/", eventData);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
