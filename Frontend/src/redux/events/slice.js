@@ -1,10 +1,17 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { createEventAsync, fetchEventsAsync } from "./operations";
+import {
+  createEventAsync,
+  deleteEventAsync,
+  fetchEventsAsync,
+} from "./operations";
 
 const eventsSlice = createSlice({
   name: "events",
   initialState: {
-    events: [],
+    events: {
+      results: [],
+      count: 0,
+    },
     loading: false,
     error: null,
   },
@@ -28,9 +35,22 @@ const eventsSlice = createSlice({
       })
       .addCase(createEventAsync.fulfilled, (state, action) => {
         state.loading = false;
-        state.events.push(action.payload);
+        state.events.results.push(action.payload);
       })
       .addCase(createEventAsync.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(deleteEventAsync.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(deleteEventAsync.fulfilled, (state, action) => {
+        state.loading = false;
+        state.events.results = state.events.results.filter(
+          (event) => event.id !== action.payload
+        );
+      })
+      .addCase(deleteEventAsync.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });

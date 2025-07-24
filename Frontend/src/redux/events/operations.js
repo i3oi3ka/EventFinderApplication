@@ -26,3 +26,15 @@ export const createEventAsync = createAsyncThunk(
     }
   }
 );
+
+export const deleteEventAsync = createAsyncThunk(
+  "events/deleteEvent",
+  async (eventId, { rejectWithValue }) => {
+    try {
+      await axios.delete(`/events/${eventId}/`);
+      return eventId;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
