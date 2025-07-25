@@ -12,3 +12,10 @@ export const createUser = async (user) => {
     throw error;
   }
 };
+
+export const fetchEventDetails = async (eventId) => {
+  const response = await axios.get(
+    `http://127.0.0.1:8000/api/events/${eventId}/`
+  );
+  return response.data;
+};

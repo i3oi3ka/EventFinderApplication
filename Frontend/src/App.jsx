@@ -18,6 +18,9 @@ const EventPage = lazy(() => import("./pages/EventPage/EventPage"));
 const CreateEventPage = lazy(() =>
   import("./pages/CreateEventPage/CreateEventPage")
 );
+const EventDetailPage = lazy(() =>
+  import("./pages/EventDetailPage/EventDetailPage")
+);
 
 function App() {
   const isRefreshing = useSelector(selectIsRefreshing);
@@ -37,6 +40,7 @@ function App() {
           <Route path="events/" element={<EventLayout />}>
             <Route path="" element={<EventPage />} />
             <Route path="create-event" element={<CreateEventPage />} />
+            <Route path=":eventId" element={<EventDetailPage />} />
           </Route>
           <Route
             path="/register"

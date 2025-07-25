@@ -1,10 +1,12 @@
+import { NavLink } from "react-router";
+
 const Event = ({ event, deleteEvent }) => {
   const handleDelete = () => {
     deleteEvent(event.id);
   };
   return (
     <div>
-      {event.title} <button onClick={handleDelete}>delete</button>
+      <NavLink to={`/events/${event.id}`}>{event.title}</NavLink> <button onClick={handleDelete}>delete</button>
     </div>
   );
 };
