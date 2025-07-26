@@ -8,12 +8,11 @@ import { selectIsRefreshing } from "./redux/auth/selectors";
 import { refreshUser } from "./redux/auth/operations";
 import { lazy, useEffect } from "react";
 import { useDispatch } from "react-redux";
+import RestrictedRoute from "./guards/RestrictedRoute/RestrictedRoute";
+import PrivateRoute from "./guards/PrivateRoute/PrivateRoute";
 
 const HomeLayout = lazy(() => import("./layout/HomeLayout/HomeLayout"));
 const EventLayout = lazy(() => import("./layout/EventLayout/EventLayout"));
-const RestrictedRoute = lazy(() =>
-  import("./guards/RestrictedRoute/RestrictedRoute")
-);
 const EventPage = lazy(() => import("./pages/EventPage/EventPage"));
 const CreateEventPage = lazy(() =>
   import("./pages/CreateEventPage/CreateEventPage")
@@ -37,7 +36,10 @@ function App() {
       <Routes>
         <Route path="/" element={<HomeLayout />}>
           <Route path="/" element={<HomePage />} />
-          <Route path="events/" element={<EventLayout />}>
+          <Route
+            path="events/"
+            element={<PrivateRoute component={<EventLayout />} />}
+          >
             <Route path="" element={<EventPage />} />
             <Route path="create-event" element={<CreateEventPage />} />
             <Route path=":eventId" element={<EventDetailPage />} />
