@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router";
+import { Route, Routes } from "react-router-dom";
 import "./App.css";
 import RegistationPage from "./pages/RegistationPage/RegistationPage";
 import LoginPage from "./pages/LoginPage/LoginPage";
@@ -6,7 +6,7 @@ import HomePage from "./pages/HomePage/HomePage";
 import { useSelector } from "react-redux";
 import { selectIsRefreshing } from "./redux/auth/selectors";
 import { refreshUser } from "./redux/auth/operations";
-import { lazy, useEffect } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import RestrictedRoute from "./guards/RestrictedRoute/RestrictedRoute";
 import PrivateRoute from "./guards/PrivateRoute/PrivateRoute";
@@ -23,21 +23,22 @@ const EventDetailPage = lazy(() =>
 
 function App() {
   const isRefreshing = useSelector(selectIsRefreshing);
-  const dispatch = useDispatch();
 
+  const dispatch = useDispatch();
   useEffect(() => {
     dispatch(refreshUser());
   }, [dispatch]);
+  console.log("App isRefreshing:", isRefreshing);
 
   return isRefreshing ? (
     <div>Loading...</div>
   ) : (
-    <>
+    <Suspense fallback={<div>Loading...</div>}>
       <Routes>
         <Route path="/" element={<HomeLayout />}>
           <Route path="/" element={<HomePage />} />
           <Route
-            path="events/"
+            path="events"
             element={<PrivateRoute component={<EventLayout />} />}
           >
             <Route path="" element={<EventPage />} />
@@ -55,7 +56,7 @@ function App() {
           <Route path="*" element={<HomePage />} />
         </Route>
       </Routes>
-    </>
+    </Suspense>
   );
 }
 
