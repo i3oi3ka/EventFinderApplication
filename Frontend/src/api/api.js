@@ -19,3 +19,10 @@ export const fetchEventDetails = async (eventId) => {
   );
   return response.data;
 };
+
+export const fetchEventOrganizer = async (userID) => {
+  const response = await axios.get(
+    `http://127.0.0.1:8000/api/accounts/${userID}/`
+  );
+  return response.data;
+};
