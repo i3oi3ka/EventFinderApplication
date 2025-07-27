@@ -3,6 +3,7 @@ import {
   createEventAsync,
   deleteEventAsync,
   fetchEventsAsync,
+  updateEventAsync,
 } from "./operations";
 
 const eventsSlice = createSlice({
@@ -51,6 +52,23 @@ const eventsSlice = createSlice({
         );
       })
       .addCase(deleteEventAsync.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(updateEventAsync.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updateEventAsync.fulfilled, (state, action) => {
+        state.loading = false;
+        const index = state.events.results.findIndex(
+          (event) => event.id === action.payload.id
+        );
+        if (index !== -1) {
+          state.events.results[index] = action.payload;
+        }
+      })
+      .addCase(updateEventAsync.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });

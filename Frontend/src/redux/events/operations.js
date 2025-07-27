@@ -27,6 +27,18 @@ export const createEventAsync = createAsyncThunk(
   }
 );
 
+export const updateEventAsync = createAsyncThunk(
+  "events/updateEvent",
+  async ({ eventId, eventData }, { rejectWithValue }) => {
+    try {
+      const response = await axios.put(`/events/${eventId}/`, eventData);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 export const deleteEventAsync = createAsyncThunk(
   "events/deleteEvent",
   async (eventId, { rejectWithValue }) => {
