@@ -1,11 +1,15 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
+import { Formik, Form, Field } from "formik";
 import Loader from "../../components/Loader/Loader";
 import { fetchEventDetails, fetchUser } from "../../api/api";
 import { selectUserId } from "../../redux/auth/selectors";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { updateEventAsync } from "../../redux/events/operations";
+import {
+  deleteEventAsync,
+  updateEventAsync,
+} from "../../redux/events/operations";
 
 const EventDetailPage = () => {
   const [event, setEvent] = useState(null);
@@ -14,7 +18,7 @@ const EventDetailPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { eventId } = useParams();
-
+  const navigate = useNavigate();
   const userID = useSelector(selectUserId);
   const dispatch = useDispatch();
 
@@ -49,12 +53,19 @@ const EventDetailPage = () => {
 
   const handleEditSubmit = (values) => {
     dispatch(updateEventAsync({ eventId, eventData: values }));
+    navigate("/events");
+    console.log("Event updated:", values);
+  };
+
+  const handleDeleteEvent = (id) => {
+    // Dispatch delete event action
+    dispatch(deleteEventAsync(id));
+    navigate("/events");
   };
 
   return (
     <div>
       <h1>Event Detail Page</h1>
-
       {loading ? (
         <Loader />
       ) : (
@@ -81,20 +92,21 @@ const EventDetailPage = () => {
                 <p>{event.date}</p>
                 <p>{event.venue}</p>
                 <p>{event.free_tickets}</p>
+
+                {event.organizer === userID && (
+                  <div>
+                    <button onClick={() => setIsEditing(!isEditing)}>
+                      Edit Event
+                    </button>
+                    <button onClick={() => handleDeleteEvent(event.id)}>
+                      Delete Event
+                    </button>
+                  </div>
+                )}
               </div>
             )
           ) : (
-            <p>No event details available.</p>
-          )}
-          {event.organizer === userID && (
-            <>
-              <button onClick={() => setIsEditing(!isEditing)}>
-                Edit Event
-              </button>
-              <button onClick={() => console.log("Delete Event")}>
-                Delete Event
-              </button>
-            </>
+            <p>No event found.</p>
           )}
         </>
       )}
