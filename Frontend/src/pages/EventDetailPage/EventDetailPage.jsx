@@ -54,7 +54,6 @@ const EventDetailPage = () => {
   const handleEditSubmit = (values) => {
     dispatch(updateEventAsync({ eventId, eventData: values }));
     navigate("/events");
-    console.log("Event updated:", values);
   };
 
   const handleDeleteEvent = (id) => {
@@ -77,6 +76,9 @@ const EventDetailPage = () => {
                 <Form>
                   <Field name="title" placeholder="Title" />
                   <Field name="description" placeholder="Description" />
+                  <Field name="category" placeholder="Category" />
+                  <Field name="image" placeholder="Image URL" />
+                  <Field name="venue" placeholder="Venue" />
                   <button type="submit">Save</button>
                 </Form>
               </Formik>
