@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
-import { Formik, Form, Field } from "formik";
 import Loader from "../../components/Loader/Loader";
 import { fetchEventDetails, fetchUser } from "../../api/api";
 import { selectUserId } from "../../redux/auth/selectors";
@@ -10,6 +9,8 @@ import {
   deleteEventAsync,
   updateEventAsync,
 } from "../../redux/events/operations";
+import EditingEventForm from "../../components/EditingEventForm/EditingEventForm";
+import EventDetail from "../../components/EventDetail/EventDetail";
 
 const EventDetailPage = () => {
   const [event, setEvent] = useState(null);
@@ -51,7 +52,7 @@ const EventDetailPage = () => {
     fetchEvent();
   }, [eventId]);
 
-  const handleEditSubmit = (values) => {
+  const editEvent = (values) => {
     dispatch(updateEventAsync({ eventId, eventData: values }));
     navigate("/events");
   };
@@ -72,29 +73,10 @@ const EventDetailPage = () => {
           {error && <p>Error loading event details.</p>}
           {event ? (
             isEditing ? (
-              <Formik initialValues={event} onSubmit={handleEditSubmit}>
-                <Form>
-                  <Field name="title" placeholder="Title" />
-                  <Field name="description" placeholder="Description" />
-                  <Field name="category" placeholder="Category" />
-                  <Field name="image" placeholder="Image URL" />
-                  <Field name="venue" placeholder="Venue" />
-                  <button type="submit">Save</button>
-                </Form>
-              </Formik>
+              <EditingEventForm event={event} editEvent={editEvent} />
             ) : (
               <div>
-                <h2>{event.title}</h2>
-                {event.image && <img src={event.image} alt={event.title} />}
-                <p>{organizer && organizer.nickname}</p>
-                <p>{event.rating}</p>
-                <p>{event.category}</p>
-                <p>{event.description}</p>
-                <p>{event.num_of_seats}</p>
-                <p>{event.date}</p>
-                <p>{event.venue}</p>
-                <p>{event.free_tickets}</p>
-
+                <EventDetail event={event} organizer={organizer} />
                 {event.organizer === userID && (
                   <div>
                     <button onClick={() => setIsEditing(!isEditing)}>
