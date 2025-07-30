@@ -63,6 +63,10 @@ const EventDetailPage = () => {
     navigate("/events");
   };
 
+  const handleGetTickets = () => {
+    console.log("reserveTickets");
+  };
+
   return (
     <div>
       <h1>Event Detail Page</h1>
@@ -79,6 +83,9 @@ const EventDetailPage = () => {
                 <EventDetail event={event} organizer={organizer} />
                 {event.organizer === userID && (
                   <div>
+                    {event.free_tickets > 0 && (
+                      <button onClick={handleGetTickets}>Get Tickets</button>
+                    )}
                     <button onClick={() => setIsEditing(!isEditing)}>
                       Edit Event
                     </button>
