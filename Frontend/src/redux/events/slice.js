@@ -3,6 +3,7 @@ import {
   createEventAsync,
   deleteEventAsync,
   fetchEventsAsync,
+  reserveTicketsAsync,
   updateEventAsync,
 } from "./operations";
 
@@ -69,6 +70,17 @@ const eventsSlice = createSlice({
         }
       })
       .addCase(updateEventAsync.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(reserveTicketsAsync.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(reserveTicketsAsync.fulfilled, (state) => {
+        state.loading = false;
+        state.events.freeTickets -= 1;
+      })
+      .addCase(reserveTicketsAsync.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });

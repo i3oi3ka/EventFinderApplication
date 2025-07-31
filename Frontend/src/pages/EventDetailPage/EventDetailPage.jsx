@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import Loader from "../../components/Loader/Loader";
-import { fetchEventDetails, fetchUser } from "../../api/api";
+import { fetchEventDetails, fetchUser, reserveTickets } from "../../api/api";
 import { selectUserId } from "../../redux/auth/selectors";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
@@ -64,6 +64,11 @@ const EventDetailPage = () => {
   };
 
   const handleGetTickets = () => {
+    reserveTickets({ eventId });
+    setEvent((prevEvent) => ({
+      ...prevEvent,
+      free_tickets: prevEvent.free_tickets - 1,
+    }));
     console.log("reserveTickets");
   };
 
@@ -80,12 +85,12 @@ const EventDetailPage = () => {
               <EditingEventForm event={event} editEvent={editEvent} />
             ) : (
               <div>
+                {event.free_tickets > 0 && (
+                  <button onClick={handleGetTickets}>Get Tickets</button>
+                )}
                 <EventDetail event={event} organizer={organizer} />
                 {event.organizer === userID && (
                   <div>
-                    {event.free_tickets > 0 && (
-                      <button onClick={handleGetTickets}>Get Tickets</button>
-                    )}
                     <button onClick={() => setIsEditing(!isEditing)}>
                       Edit Event
                     </button>

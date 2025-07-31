@@ -26,3 +26,15 @@ export const fetchUser = async (userID) => {
   );
   return response.data;
 };
+
+export const reserveTickets = async ({ eventId }) => {
+  try {
+    const response = await axios.post(`http://127.0.0.1:8000/api/tickets/`, {
+      event: eventId,
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error reserving tickets:", error);
+    throw error;
+  }
+};

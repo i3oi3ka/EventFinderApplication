@@ -50,3 +50,15 @@ export const deleteEventAsync = createAsyncThunk(
     }
   }
 );
+
+export const reserveTicketsAsync = createAsyncThunk(
+  "events/reserveTickets",
+  async ({ eventId }, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(`/tickets/`, { event: eventId });
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
