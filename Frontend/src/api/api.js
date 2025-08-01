@@ -38,3 +38,15 @@ export const reserveTickets = async ({ eventId }) => {
     throw error;
   }
 };
+
+export const fetchComments = async (eventId) => {
+  try {
+    const response = await axios.get(
+      `http://127.0.0.1:8000/api/comments/${eventId}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching comments:", error);
+    throw error;
+  }
+};

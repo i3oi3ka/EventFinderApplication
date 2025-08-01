@@ -11,6 +11,7 @@ import {
 } from "../../redux/events/operations";
 import EditingEventForm from "../../components/EditingEventForm/EditingEventForm";
 import EventDetail from "../../components/EventDetail/EventDetail";
+import CommentsList from "../../components/CommentsList/CommentsList";
 
 const EventDetailPage = () => {
   const [event, setEvent] = useState(null);
@@ -18,6 +19,7 @@ const EventDetailPage = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [components, setComponents] = useState([]);
   const { eventId } = useParams();
   const navigate = useNavigate();
   const userID = useSelector(selectUserId);
@@ -37,11 +39,11 @@ const EventDetailPage = () => {
         setLoading(false);
       }
     };
+
     const fetchOrganizer = async (userID) => {
       try {
         setLoading(true);
         const data = await fetchUser(userID);
-
         setOrganizer(data);
       } catch (error) {
         setError(error);
@@ -49,8 +51,23 @@ const EventDetailPage = () => {
         setLoading(false);
       }
     };
+
+    const fetchComments = async () => {
+      try {
+        setLoading(true);
+        const comments = await fetchComments(eventId);
+        setComponents(comments);
+      } catch (error) {
+        console.error("Error fetching comments:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
     fetchEvent();
-  }, [eventId]);
+    fetchOrganizer(userID);
+    fetchComments();
+  }, [eventId, userID]);
 
   const editEvent = (values) => {
     dispatch(updateEventAsync({ eventId, eventData: values }));
@@ -98,6 +115,10 @@ const EventDetailPage = () => {
                       Delete Event
                     </button>
                   </div>
+                )}
+
+                {components.length > 0 && (
+                  <CommentsList comments={components} />
                 )}
               </div>
             )
