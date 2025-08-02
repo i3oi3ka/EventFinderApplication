@@ -12,6 +12,7 @@ import {
 import EditingEventForm from "../../components/EditingEventForm/EditingEventForm";
 import EventDetail from "../../components/EventDetail/EventDetail";
 import CommentsList from "../../components/CommentsList/CommentsList";
+import CreateCommentForm from "../../components/CreateCommentForm/CreateCommentForm";
 
 const EventDetailPage = () => {
   const [event, setEvent] = useState(null);
@@ -117,8 +118,13 @@ const EventDetailPage = () => {
                   </div>
                 )}
 
-                {components.length > 0 && (
-                  <CommentsList comments={components} />
+                {components.length > 0 ? (
+                  <>
+                    <CommentsList comments={components} />
+                    <CreateCommentForm eventId={event.id} />
+                  </>
+                ) : (
+                  <p>No comments found.</p>
                 )}
               </div>
             )

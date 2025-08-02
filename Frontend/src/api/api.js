@@ -50,3 +50,16 @@ export const fetchComments = async (eventId) => {
     throw error;
   }
 };
+
+export const createComment = async (eventId, commentData) => {
+  try {
+    const response = await axios.post(
+      `http://127.0.0.1:8000/api/comments/`,
+      commentData
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error creating comment:", error);
+    throw error;
+  }
+};
