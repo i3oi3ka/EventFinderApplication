@@ -59,7 +59,7 @@ export const createComment = async (commentData) => {
     );
     return response.data;
   } catch (error) {
-    console.error("Error creating comment:", error);
-    throw error;
+    console.error("Error creating comment:", error.response.data.msg);
+    throw new Error(error.response.data.msg);
   }
 };

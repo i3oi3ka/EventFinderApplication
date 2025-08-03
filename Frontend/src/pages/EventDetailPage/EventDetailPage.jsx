@@ -97,8 +97,12 @@ const EventDetailPage = () => {
   };
 
   const handleCreateComment = async (commentData) => {
-    createComment({ event: eventId, ...commentData });
-    setComments((prevComments) => [...prevComments, commentData]);
+    try {
+      const result = await createComment({ event: eventId, ...commentData });
+      setComments((prevComments) => [...prevComments, result]);
+    } catch (error) {
+      console.error("Error creating comment:", error.message);
+    }
   };
 
   return (
