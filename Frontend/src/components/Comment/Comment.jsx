@@ -2,7 +2,8 @@ const Comment = ({ comment }) => {
   return (
     <div>
       <p>{comment.text}</p>
-      <small>By {comment.author}</small>
+      <small>{comment.rating}</small>
+      <small>{comment.comment}</small>
     </div>
   );
 };

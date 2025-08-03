@@ -1,7 +1,13 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import Loader from "../../components/Loader/Loader";
-import { fetchEventDetails, fetchUser, reserveTickets } from "../../api/api";
+import {
+  createComment,
+  fetchComments,
+  fetchEventDetails,
+  fetchUser,
+  reserveTickets,
+} from "../../api/api";
 import { selectUserId } from "../../redux/auth/selectors";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
@@ -11,8 +17,8 @@ import {
 } from "../../redux/events/operations";
 import EditingEventForm from "../../components/EditingEventForm/EditingEventForm";
 import EventDetail from "../../components/EventDetail/EventDetail";
-import CommentsList from "../../components/CommentsList/CommentsList";
 import CreateCommentForm from "../../components/CreateCommentForm/CreateCommentForm";
+import CommentsList from "../../components/CommentsList/CommentsList";
 
 const EventDetailPage = () => {
   const [event, setEvent] = useState(null);
@@ -20,7 +26,7 @@ const EventDetailPage = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [components, setComponents] = useState([]);
+  const [comments, setComments] = useState([]);
   const { eventId } = useParams();
   const navigate = useNavigate();
   const userID = useSelector(selectUserId);
@@ -53,11 +59,11 @@ const EventDetailPage = () => {
       }
     };
 
-    const fetchComments = async () => {
+    const fetchCommentsList = async () => {
       try {
         setLoading(true);
         const comments = await fetchComments(eventId);
-        setComponents(comments);
+        setComments(comments.results || []);
       } catch (error) {
         console.error("Error fetching comments:", error);
       } finally {
@@ -67,7 +73,7 @@ const EventDetailPage = () => {
 
     fetchEvent();
     fetchOrganizer(userID);
-    fetchComments();
+    fetchCommentsList();
   }, [eventId, userID]);
 
   const editEvent = (values) => {
@@ -88,6 +94,11 @@ const EventDetailPage = () => {
       free_tickets: prevEvent.free_tickets - 1,
     }));
     console.log("reserveTickets");
+  };
+
+  const handleCreateComment = async (commentData) => {
+    createComment({ event: eventId, ...commentData });
+    setComments((prevComments) => [...prevComments, commentData]);
   };
 
   return (
@@ -117,11 +128,13 @@ const EventDetailPage = () => {
                     </button>
                   </div>
                 )}
-
-                {components.length > 0 ? (
+                <h2>Comments</h2>
+                <CreateCommentForm handleCreateComment={handleCreateComment} />
+                {loading ? (
+                  <Loader />
+                ) : comments.length > 0 ? (
                   <>
-                    <CommentsList comments={components} />
-                    <CreateCommentForm eventId={event.id} />
+                    <CommentsList comments={comments} />
                   </>
                 ) : (
                   <p>No comments found.</p>
