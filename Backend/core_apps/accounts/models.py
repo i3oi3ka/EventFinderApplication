@@ -9,4 +9,6 @@ class Settings(models.Model):
 
 class User(AbstractUser):
     nickname = models.CharField(max_length=255)
-    settings = models.OneToOneField(Settings, on_delete=models.CASCADE, default=None, null=True, blank=True)
+    settings = models.OneToOneField(
+        Settings, on_delete=models.CASCADE, default=None, null=True, blank=True
+    )

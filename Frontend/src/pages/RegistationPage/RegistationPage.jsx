@@ -1,57 +1,22 @@
-import { Formik } from "formik";
 import { useDispatch } from "react-redux";
 import { registerUser } from "../../redux/auth/operations.js";
+import RegistationForm from "../../components/RegistrationForm/RegistrationForm.jsx";
+import { useSelector } from "react-redux";
+import { selectUserError } from "../../redux/auth/selectors.js";
 
 const RegistationPage = () => {
   const dispatch = useDispatch();
-  const submitForm = (values, actions) => {
+  const error = useSelector(selectUserError);
+  const submitForm = (values) => {
+    console.log("Registration values:", values);
     dispatch(registerUser(values));
-    actions.reset;
   };
 
   return (
     <div>
-      RegistationPage
       <h1>Registration Page</h1>
-      <Formik
-        initialValues={{
-          nickname: "",
-          username: "",
-          password: "",
-          password2: "",
-        }}
-        onSubmit={submitForm}
-      >
-        {({ handleChange, handleSubmit }) => (
-          <form onSubmit={handleSubmit}>
-            <input
-              type="text"
-              name="nickname"
-              placeholder="nickname"
-              onChange={handleChange}
-            />
-            <input
-              type="text"
-              name="username"
-              placeholder="username"
-              onChange={handleChange}
-            />
-            <input
-              type="password"
-              name="password"
-              placeholder="Password"
-              onChange={handleChange}
-            />
-            <input
-              type="password"
-              name="password2"
-              placeholder="Password"
-              onChange={handleChange}
-            />
-            <button type="submit">Register</button>
-          </form>
-        )}
-      </Formik>
+      <RegistationForm submitSignUP={submitForm} />
+      {error && <p style={{ color: "red" }}>{error}</p>}
     </div>
   );
 };
